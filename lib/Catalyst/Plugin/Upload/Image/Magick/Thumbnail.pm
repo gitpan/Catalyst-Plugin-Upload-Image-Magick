@@ -16,11 +16,11 @@ Catalyst::Plugin::Upload::Image::Magick::Thumbnail - Making thumbnail image is k
 
 =head1 VERSION
 
-Version 0.01
+Version 0.03
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -125,6 +125,8 @@ See also L<Image::Magick::Thumbnail>, L<Image::Magick::Thumbnail::Fixed>
 
     package Catalyst::Request::Upload;
 
+		__PACKAGE__->mk_accessors(qw/_thumbnail_temp/);
+
     sub thumbnail {
         my ( $self, $args ) = @_;
 
@@ -149,7 +151,7 @@ See also L<Image::Magick::Thumbnail>, L<Image::Magick::Thumbnail::Fixed>
 
         $args->{format} = "jpg" unless ( exists $args->{format} );
         $args->{output} = File::Temp->new(
-            DIR => Catalyst::Utils->class2tempdir(
+            DIR => Catalyst::Utils::class2tempdir(
                 "Catalyst::Plugin::Upload::Image::Magick::Thumbnail", 1
             ),
             TEMPLATE => "thumbnail_XXXXXX",
@@ -173,6 +175,10 @@ See also L<Image::Magick::Thumbnail>, L<Image::Magick::Thumbnail::Fixed>
             quality => ( exists $args->{quality} ) ? $args->{quality} : 70 );
         $thumbnail->Thumbnail( width => $dest_width, height => $dest_height );
         $thumbnail->Write( $args->{format} . ":" . $args->{output} );
+
+				### for File::Temp's cleanup
+				$self->_thumbnail_temp({}) unless ($self->_thumbnail_temp);
+				$self->_thumbnail_temp->{ $thumbnail->Get('filename') } = $args->{output};
 
         return $thumbnail;
     }
