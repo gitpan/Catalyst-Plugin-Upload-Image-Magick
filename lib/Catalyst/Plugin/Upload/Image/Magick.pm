@@ -14,11 +14,11 @@ Catalyst::Plugin::Upload::Image::Magick - Image information plugin for Catalyst:
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -55,11 +55,7 @@ And you can execute method around image information in L<Catalyst::Request::Imag
         unless ( $self->_image ) {
             my $image = Image::Magick->new;
 
-            Catalyst::Exception->throw(
-                "No support content-type : " . $self->type )
-              if ( !$self->type
-                || [ split( '/', $self->type ) ]->[0] ne 'image' );
-
+            return undef if ( !$self->type || [ split( '/', $self->type ) ]->[0] ne 'image' );
             my $result = $image->Read( file => $self->fh );
             Catalyst::Exception->throw($result) if ($result);
 

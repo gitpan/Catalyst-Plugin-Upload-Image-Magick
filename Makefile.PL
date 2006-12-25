@@ -3,7 +3,7 @@ use inc::Module::Install;
 name('Catalyst-Plugin-Upload-Image-Magick');
 author('Toru Yamaguchi');
 abstract('Utility using ImageMagick for Catalyst::Request::Upload');
-version_from('lib/Catalyst/Plugin/Upload/Image/Magick.pm');
+version('0.02');
 license('perl');
 
 requires('Catalyst');
