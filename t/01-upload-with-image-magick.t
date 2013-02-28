@@ -1,6 +1,6 @@
 #!perl -T
 
-use lib qw(lib);
+use lib qw(lib .);
 use Test::Base tests => 16;
 
 require 't/setup.pl';

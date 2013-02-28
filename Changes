@@ -1,5 +1,9 @@
 Revision history for Catalyst-Plugin-Upload-Image-Magick
 
+0.04		2013-2-27
+				New Maintainer Adam Hopkins.
+				Fixed critical bug where the module didn't work for Catalyst >= 5.8 by removing "monkeypatching"
+
 0.03    2006-12-25 15:58:53
         Fixed for File::Temp's destroy
 

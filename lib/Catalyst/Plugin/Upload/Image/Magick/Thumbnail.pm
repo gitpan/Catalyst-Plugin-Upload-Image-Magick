@@ -16,11 +16,11 @@ Catalyst::Plugin::Upload::Image::Magick::Thumbnail - Making thumbnail image is k
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -125,8 +125,6 @@ See also L<Image::Magick::Thumbnail>, L<Image::Magick::Thumbnail::Fixed>
 
     package Catalyst::Request::Upload;
 
-		__PACKAGE__->mk_accessors(qw/_thumbnail_temp/);
-
     sub thumbnail {
         my ( $self, $args ) = @_;
 
@@ -177,8 +175,8 @@ See also L<Image::Magick::Thumbnail>, L<Image::Magick::Thumbnail::Fixed>
         $thumbnail->Write( $args->{format} . ":" . $args->{output} );
 
 				### for File::Temp's cleanup
-				$self->_thumbnail_temp({}) unless ($self->_thumbnail_temp);
-				$self->_thumbnail_temp->{ $thumbnail->Get('filename') } = $args->{output};
+				$self->{_thumbnail_temp} = {} unless ($self->{_thumbnail_temp});
+				$self->{_thumbnail_temp}->{ $thumbnail->Get('filename') } = $args->{output};
 
         return $thumbnail;
     }
@@ -227,6 +225,11 @@ L<http://search.cpan.org/dist/Catalyst-Plugin-Upload-Image-Magick>
 =back
 
 =head1 ACKNOWLEDGEMENTS
+
+=head1 Current Maintainer
+
+The current maintainer of this module is Adam Hopkins. Any questions or comments should be sent to him
+at srchulo@cpan.org
 
 =head1 COPYRIGHT & LICENSE
 

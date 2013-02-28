@@ -14,11 +14,11 @@ Catalyst::Plugin::Upload::Image::Magick - Image information plugin for Catalyst:
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -47,22 +47,20 @@ And you can execute method around image information in L<Catalyst::Request::Imag
 
     package Catalyst::Request::Upload;
 
-    __PACKAGE__->mk_accessors(qw/_image/);
-
     sub image {
         my $self = shift;
 
-        unless ( $self->_image ) {
+        unless ( $self->{_image} ) {
             my $image = Image::Magick->new;
 
             return undef if ( !$self->type || [ split( '/', $self->type ) ]->[0] ne 'image' );
             my $result = $image->Read( file => $self->fh );
             Catalyst::Exception->throw($result) if ($result);
 
-            $self->_image($image);
+            $self->{_image} = $image;
         }
 
-        return $self->_image;
+        return $self->{_image};
     }
 
     sub is_image {
@@ -154,7 +152,10 @@ L<http://search.cpan.org/dist/Catalyst-Plugin-Upload-Image-Magick>
 
 =back
 
-=head1 ACKNOWLEDGEMENTS
+=head1 Current Maintainer
+
+The current maintainer of this module is Adam Hopkins. Any questions or comments should be sent to him
+at srchulo@cpan.org
 
 =head1 COPYRIGHT & LICENSE
 
